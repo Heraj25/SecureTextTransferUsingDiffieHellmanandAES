@@ -1,8 +1,7 @@
 import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
-import application.EDcrypt;
-
+import ecryptiondecryption.EDcrypt;
 
 public class MessageExchanger
 {
@@ -42,14 +41,15 @@ public class MessageExchanger
 		
 		System.out.println("\nSecret Key: " + aliceKey); 
 		System.out.println("----------------------------------------");
+
+		scanner.close();
+		EDcrypt run=new EDcrypt();
+        run.setVisible(true);
 		
+/* 
 		CBCOverAES cbc = new CBCOverAES(aliceKey + "");
 
 
-		EDcrypt run=new EDcrypt();
-        run.setVisible(true);
-
-		
 		//-------Scanning input-------
 		System.out.println("Please type your message, Alice: ");
 		scanner.reset();
@@ -69,5 +69,6 @@ public class MessageExchanger
 		System.out.println("Ciphertext (Oscar sees this): " + cipher);
 		System.out.println("Decrypted plaintext (Bob sees this): " + dec);
 		System.out.println("\nInitial Vector: " + CBCOverAES.getInitVector() + '\n');
+		*/
 	}
 }
