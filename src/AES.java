@@ -4,14 +4,8 @@ import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * A class that performs AES Encryption and Decryption. <br>
- * The code was taken from HowToDoItInJava. Most parts of the code are modified.
- * 
- * @author Lokesh Gupta
- * @see <a href=
- *      "https://howtodoinjava.com/security/java-aes-encryption-example/">HowToDoItInJava</a>
- */
+
+//reference link "https://howtodoinjava.com/security/java-aes-encryption-example/"
 public class AES
 {
 	private static SecretKeySpec secretKey;
