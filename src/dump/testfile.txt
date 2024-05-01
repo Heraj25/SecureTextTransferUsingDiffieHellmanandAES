@@ -1,0 +1,24 @@
+/* 
+		CBCOverAES cbc = new CBCOverAES(aliceKey + "");
+
+
+		//-------Scanning input-------
+		System.out.println("Please type your message, Alice: ");
+		scanner.reset();
+		String plainText = scanner.nextLine();
+		scanner.close();
+		
+		//----------Encryption---------
+		byte[] cipherB = cbc.encrypt(plainText);
+		String cipher = new String(cipherB, "UTF-8");
+		
+		//----------Decryption---------
+		byte[] decB = cbc.decrypt(cipherB);
+		String dec = new String(decB, "UTF-8");
+		
+		//-------Printing results-------
+		System.out.println("\nPlaintext (Alice sees this): " + plainText);
+		System.out.println("Ciphertext (Oscar sees this): " + cipher);
+		System.out.println("Decrypted plaintext (Bob sees this): " + dec);
+		System.out.println("\nInitial Vector: " + CBCOverAES.getInitVector() + '\n');
+		*/
