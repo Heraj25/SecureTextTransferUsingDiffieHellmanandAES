@@ -5,34 +5,34 @@ import ecryptiondecryption.EDcrypt;
 
 public class MessageExchanger
 {
-	/** A prime number */
+	//prime number
 	private static int p;
-	/** Generator */
+	//generator
 	private static int alpha;
 	
 	public static void main(String[] args) throws UnsupportedEncodingException
 	{
-		//-------Scanning input-------
+		
 		System.out.println("Please enter the the prime number (p) for the key exchange algorithm: ");
 		Scanner scanner = new Scanner(System.in);
 		p = scanner.nextInt();
 		System.out.println("Please enter the the generator (alpha) for the key exchange algorithm: ");
 		alpha = scanner.nextInt();
-		scanner.nextLine(); // this line is needed so that the next scan doesn't fail
+		scanner.nextLine(); 
 		
-		//-------Printing the key exchange related info-------
+		
 		System.out.println("----------------------------------------");
 		System.out.println("Diffie-Hellman Key Exchange initiated...");
 		System.out.println("P = " + p + " Alpha = " + alpha);
 		
-		//-------Getting the private and public keys-------
+		
 		DHKeyExchanger dhAlice = new DHKeyExchanger(p, alpha);
 		System.out.println("\nAlice's Private Key: " + dhAlice.getPrivateKey() + "\nAlice's Public Key: " + dhAlice.getPublicKey());
 		
 		DHKeyExchanger dhBob = new DHKeyExchanger(p, alpha);
 		System.out.println("\nBob's Private Key: " + dhBob.getPrivateKey() + "\nBob's Public Key: " + dhBob.getPublicKey());
 		
-		//-------Getting the secret key-------
+		
 		long aliceKey = dhAlice.getSecretKey(dhBob.getPublicKey());
 		long bobKey = dhBob.getSecretKey(dhAlice.getPublicKey());
 		
