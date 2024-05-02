@@ -1,108 +1,127 @@
 import java.io.UnsupportedEncodingException;
-
 import java.util.Scanner;
 
 import ecryptiondecryption.EDcrypt;
 
 public class MessageExchanger
 {
-	//prime number
-	private static int p;
-	//generator
-	private static int alpha;
+    
+    private static int p;
+    
+    private static int alpha;
+
+    public static void main(String[] args) throws UnsupportedEncodingException
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("Please enter the prime number (p) for the key exchange algorithm: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid prime number.");
+                scanner.next(); 
+            }
+            p = scanner.nextInt();
+
+           
+            if (!isPrime(p)) {
+                System.out.println("The entered number is not a prime number. Please enter a prime number.");
+            }
+        } while (!isPrime(p));
+
+// Input Krdo (alpha) for the key exchange algorithm alpha primitive root hai 
+        do {
+            System.out.println("Please enter the generator (alpha) for the key exchange algorithm: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.next(); 
+            }
+            alpha = scanner.nextInt();
+
+// Check if alpha is a primitive root modulo p
+            if (!isPrimitiveRoot(alpha, p)) {
+                System.out.println("The entered alpha is not a primitive root modulo " + p + ". Please enter a primitive root.");
+            }
+        } while (!isPrimitiveRoot(alpha, p));
+
+        scanner.nextLine(); 
+
+        System.out.println("----------------------------------------");
+        System.out.println("Diffie-Hellman Key Exchange initiated...");
+        System.out.println("P = " + p + ", Alpha = " + alpha);
+
+        DHKeyExchanger dhAlice = new DHKeyExchanger(p, alpha);
+        System.out.println("\nAlice's Private Key: " + dhAlice.getPrivateKey() + "\nAlice's Public Key: " + dhAlice.getPublicKey());
+
+        DHKeyExchanger dhBob = new DHKeyExchanger(p, alpha);
+        System.out.println("\nBob's Private Key: " + dhBob.getPrivateKey() + "\nBob's Public Key: " + dhBob.getPublicKey());
+
+        long aliceKey = dhAlice.getSecretKey(dhBob.getPublicKey());
+        long bobKey = dhBob.getSecretKey(dhAlice.getPublicKey());
+
+        if (aliceKey != bobKey)
+            System.err.println("Secret keys are not the same. Probably your p and alpha are big enough to confuse the Math.pow() function used in DHKeyExchanger class");
+
+        System.out.println("\nSecret Key: " + aliceKey);
+        System.out.println("----------------------------------------");
+
+        scanner.close();
+        EDcrypt run=new EDcrypt();
+        run.setVisible(true);
+    }
+
+//Number is prime
+   
+	private static boolean isPrime(int n) {
+		if (n <= 1)
+			return false;
 	
-	public static boolean isPrimitiveRoot(int p, int alpha) {
-        boolean[] visited = new boolean[p];
-        
-        int current = alpha % p;
-        visited[current] = true;
-        for (int i = 2; i < p; i++) {
-            current = (current * alpha) % p;
-            visited[current] = true;
-        }
-        
-        
-        for (int i = 1; i < p; i++) {
-            if (!visited[i]) {
-                return false; 
-            }
-        }
-        
-        return true; 
-    }
-
-	public static boolean isPrime(int p, int alpha) {
-        // Check if p is prime
-        boolean isPPrime = isPrimeNumber(p);
-        // Check if alpha is prime
-        boolean isAlphaPrime = isPrimeNumber(alpha);
-
-        return isPPrime && isAlphaPrime;
-    }
-
-    // Helper function to check if a number is prime
-    private static boolean isPrimeNumber(int n) {
-        if (n <= 1) {
-            return false;
-        }
-        if (n <= 3) {
-            return true;
-        }
-        if (n % 2 == 0 || n % 3 == 0) {
-            return false;
-        }
-        for (int i = 5; i * i <= n; i = i + 6) {
-            if (n % i == 0 || n % (i + 2) == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-	//good use cases p=7 and alpha=2 fails the test
-	//p=7 and alpha=3 passes the test
-	//p=23, 𝛼=5 passes the test
-	//
-
-	public static void main(String[] args) throws UnsupportedEncodingException
-	{
-		
-		System.out.println("Please enter the the prime number (p) for the key exchange algorithm: ");
-		Scanner scanner = new Scanner(System.in);
-		p = scanner.nextInt();
-		System.out.println("Please enter the the generator (alpha) for the key exchange algorithm: ");
-		alpha = scanner.nextInt();
-		// scanner.nextLine(); 
-		
-		
-		System.out.println("----------------------------------------");
-		System.out.println("Diffie-Hellman Key Exchange initiated...");
-		System.out.println("P = " + p + " Alpha = " + alpha);
-		
-		
-
-		if(isPrimitiveRoot(p, alpha) && isPrime(p, alpha)) {
-			DHKeyExchanger dhAlice = new DHKeyExchanger(p, alpha);
-			System.out.println("\nAlice's Private Key: " + dhAlice.getPrivateKey() + "\nAlice's Public Key: " + dhAlice.getPublicKey());
-			
-			DHKeyExchanger dhBob = new DHKeyExchanger(p, alpha);
-			System.out.println("\nBob's Private Key: " + dhBob.getPrivateKey() + "\nBob's Public Key: " + dhBob.getPublicKey());
-			
-			
-			long aliceKey = dhAlice.getSecretKey(dhBob.getPublicKey());
-			long bobKey = dhBob.getSecretKey(dhAlice.getPublicKey());
-			if(aliceKey == bobKey) {
-				System.out.println("\nSecret Key: " + aliceKey); 
-				System.out.println("----------------------------------------");
-			}
-				
-			scanner.close();
-			EDcrypt run=new EDcrypt();
-			run.setVisible(true);
-		
+//divisibility from 2 up to the square root of n
+		for (int i = 2; i * i <= n; i++) {
+			if (n % i == 0)
+				return false;
 		}
-		else //(aliceKey != bobKey)
-			System.err.println("Secret keys are not the same. Probably your p and alpha does not contain primitive root or they may not be prime numbers");
-
+	
+		return true;
 	}
+	
+// Primitive root modulo p
+    
+private static boolean isPrimitiveRoot(int alpha, int p) {
+    if (gcd(alpha, p) != 1)
+        return false;
+//Euler's Totient Function (phi)
+    int phi = p - 1;
+// Alpha raised to the power of each number from 1 to phi generates distinct values
+    for (int i = 1; i <= phi; i++) {
+        int result = power(alpha, i, p);
+        for (int j = i + 1; j <= phi; j++) {
+            if (result == power(alpha, j, p))
+                return false; 
+	// Alpha generates a repeated value, it's not a primitive root
+        }
+    }
+    
+    return true;
+}
+
+
+// Power in modular
+    private static int power(int x, int y, int p) {
+        int res = 1;
+        x = x % p;
+
+        while (y > 0) {
+            if ((y & 1) == 1)
+                res = (res * x) % p;
+            y = y >> 1;
+            x = (x * x) % p;
+        }
+        return res;
+    }
+//Greatest Common Divisor (GCD)
+    private static int gcd(int a, int b) {
+        if (b == 0)
+            return a;
+        return gcd(b, a % b);
+    }
 }
