@@ -12,11 +12,7 @@ public class AES
 	private static SecretKeySpec secretKey;
 	private static byte[] key;
 	
-	/**
-	 * Sets the key for the AES-128 algorithm.\n
-	 * Padding is applied if the key is less than 16 bytes.
-	 * @param myKey
-	 */
+
 	public static void setKey(String myKey)
 	{
 		try
@@ -31,12 +27,6 @@ public class AES
 		}
 	}
 	
-	/**
-	 * Encrypts the given byte array.
-	 * @param bytesToEncrypt - plaintext byte array
-	 * @param secret - key
-	 * @return encrypted byte array
-	 */
 	public static byte[] encrypt(byte[] bytesToEncrypt, String secret)
 	{
 		try
@@ -57,12 +47,7 @@ public class AES
 		return null;
 	}
 	
-	/**
-	 * Decrypts the given byte array.
-	 * @param strToDecrypt - ciphertext byte array
-	 * @param secret - key
-	 * @return decrypted byte array
-	 */
+
 	public static byte[] decrypt(byte[] strToDecrypt, String secret)
 	{
 		try
